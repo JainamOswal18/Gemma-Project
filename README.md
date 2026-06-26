@@ -1,52 +1,99 @@
-# 🔮 Mind Reader — local Akinator powered by Gemma 4
+<div align="center">
 
-Think of a **famous person, fictional character, animal, or object**. Gemma asks
-smart yes/no questions, narrows the possibilities each turn, and tries to guess
-what's in your head — all running **100% offline** on your machine via Ollama.
+# 🔮 Mind Reader
 
-No API keys. No cloud. No dependencies beyond Python's standard library.
+### *I'll read your mind in 20 questions — and I run entirely on your machine.*
 
-## Three ways to play
+A local **Akinator-style** guessing game powered by **Gemma 4** running on **Ollama**.
+Think of anything — a person, character, animal, or object — and watch a local LLM
+deduce it through smart, graded questions. No cloud. No API keys. No data leaves your box.
 
-**1. Streamlit GUI (recommended)** — polished browser UI with graded answers:
+<br>
+
+![Gemma 4](https://img.shields.io/badge/Gemma_4-Ollama-a855f7?style=for-the-badge&logo=google&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.14-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-GUI-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![100% Local](https://img.shields.io/badge/100%25-Local_&_Private-34d399?style=for-the-badge)
+
+</div>
+
+---
+
+## ✨ What makes it cool
+
+- 🧠 **Real deductive reasoning** — Gemma asks the *single most informative* question each turn, binary-searching through concept-space. 20 yes/no questions can pin down ~1,000,000 things.
+- 🎚️ **Graded answers, not just yes/no** — reply with **Yes · Probably · Somewhat · Probably not · No · Don't know**, and the model weighs partial evidence accordingly.
+- 🔒 **Fully offline & private** — the LLM, the game logic, and the UI all run locally via Ollama.
+- 🎨 **Three ways to play** — a polished Streamlit GUI, a slick terminal version, and a zero-dependency web app.
+- 🪶 **Featherweight** — the terminal and web versions use *only* the Python standard library.
+
+---
+
+## 🚀 Quick start
+
+> **Prereq:** [Ollama](https://ollama.com) running with a `gemma4` model pulled (`ollama pull gemma4:e4b`).
+
+### 1 · Streamlit GUI *(recommended)*
 ```bash
-./.venv/bin/streamlit run app.py
-# then open http://localhost:8501
+python3 -m venv .venv
+.venv/bin/python -m pip install streamlit
+.venv/bin/streamlit run app.py
+# → open http://localhost:8501
 ```
-Instead of plain yes/no, you answer on a scale — **Yes · Probably · Somewhat ·
-Probably not · No · Don't know** — and Gemma weighs partial answers as partial
-evidence. Pick the model (e4b/26b) and watch the live transcript in the sidebar.
 
-**2. Terminal version:**
+### 2 · Terminal
 ```bash
 python3 mindreader.py
 python3 mindreader.py --model gemma4:26b   # smarter, slower
 ```
-Answer with `y` / `n` / `maybe` / `unknown` (or `quit`).
 
-**3. Zero-dependency web app** (no Streamlit needed, pure stdlib):
+### 3 · Zero-dependency web app
 ```bash
-python3 webapp.py            # open http://localhost:8000
+python3 webapp.py        # → open http://localhost:8000
 ```
 
-> Setup note: Streamlit lives in a local virtualenv at `.venv/` (the system Python
-> had no pip). Recreate with: `python3 -m venv .venv && .venv/bin/python -m pip install streamlit`.
+---
 
-## How it works
-- Each turn the full Q&A history is sent to Gemma, which is prompted to ask the
-  **single most informative** yes/no question — splitting the remaining
-  possibility space roughly in half (classic 20-questions strategy).
-- Ollama's `"format": "json"` mode forces Gemma to reply as structured JSON
-  (`{"action": "question"|"guess", "text": "..."}`), so parsing is reliable.
-- When confident — or running low on questions — it switches to a guess. A wrong
-  guess is recorded as new evidence and the hunt continues.
+## 🧩 How it works
 
-## Why it's a fun showcase
-It exercises the part of an LLM that's hard to fake: **multi-step deductive
-reasoning under uncertainty**, with state carried across turns. Easy to demo,
-endlessly replayable, and it really does feel like it's reading your mind.
+```
+You think of something  ──►  Gemma asks the best next question  ──►  you answer (graded)
+        ▲                                                                      │
+        └──────────────  full Q&A history re-fed each turn  ◄─────────────────┘
+                          narrowing the space, until ──►  🎯 it GUESSES
+```
 
-## Ideas to extend
-- Reverse it: *you* guess what *Gemma* is thinking.
-- Keep a local scoreboard (questions-to-guess) across games.
-- Add a "learn" file so wrong guesses improve future games.
+1. **State across turns** — the entire transcript is sent back each round, so Gemma reasons over everything known so far.
+2. **Binary search over ideas** — it's prompted to split the remaining possibilities roughly in half every question.
+3. **Structured output** — Ollama's `format: json` forces a clean `{"action": "question" | "guess", "text": "…"}`, so the game logic never has to parse fuzzy text.
+
+---
+
+## 🗂️ Project layout
+
+| File | What it is |
+|------|------------|
+| `app.py` | Streamlit GUI with graded answers, model picker, live transcript |
+| `mindreader.py` | Colorful terminal version |
+| `webapp.py` | Pure-stdlib browser version (no Streamlit needed) |
+
+---
+
+## 🛠️ Ideas to extend
+
+- 🏆 Local scoreboard (questions-to-guess across games)
+- 📚 "Learn from wrong guesses" memory file
+- 🔁 Reverse mode — *you* guess what *Gemma* is thinking
+- 🔐 Password gate before sharing publicly
+
+---
+
+<div align="center">
+
+### Developed by **Jainam Oswal**
+
+*Powered by Gemma 4 · Built to run anywhere, owned by no one but you.*
+
+⭐ If this made you smile, give it a star!
+
+</div>
