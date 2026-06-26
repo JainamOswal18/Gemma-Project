@@ -19,6 +19,10 @@ deduce it through smart, graded questions. No cloud. No API keys. No data leaves
 
 ---
 
+<img width="1463" height="746" alt="image" src="https://github.com/user-attachments/assets/c5304339-17fe-40be-9b6f-30a3302e04be" />
+
+--- 
+
 ## ✨ What makes it cool
 
 - 🧠 **Real deductive reasoning** — Gemma asks the *single most informative* question each turn, binary-searching through concept-space. 20 yes/no questions can pin down ~1,000,000 things.
