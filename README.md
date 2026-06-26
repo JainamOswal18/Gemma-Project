@@ -54,6 +54,32 @@ python3 webapp.py        # → open http://localhost:8000
 
 ---
 
+## 🤖 Why Gemma 4? (the use case)
+
+**Gemma 4** is Google's open-weight large language model — small enough to run on
+your own machine through Ollama, yet capable enough to *reason*. This game is built
+specifically to show off the part of an LLM that's hard to fake:
+
+| What the game needs | What Gemma provides |
+|---------------------|---------------------|
+| Ask a smart, *new* question every turn | Open-ended **generation** grounded in the conversation so far |
+| Get closer with each answer | **Multi-step deductive reasoning** under uncertainty |
+| Handle "probably / somewhat / don't know" | **Nuanced interpretation** of fuzzy, graded input |
+| Decide *when* to stop and guess | **Judgment** — weighing confidence vs. questions remaining |
+| Never break the program | **Structured JSON output** (`format: json`) the code can trust |
+
+Because Gemma runs **locally via Ollama**, this use case is:
+
+- 🔒 **Private** — your guesses never touch a third-party server
+- 💸 **Free** — no per-token API billing
+- ✈️ **Offline-capable** — works with no internet once the model is pulled
+- 🔁 **Swappable** — `gemma4:e4b` for speed, `gemma4:26b` for sharper reasoning
+
+In short: it's a tiny, fun demonstration that a **local open model can carry a real
+reasoning task end-to-end** — no cloud LLM required.
+
+---
+
 ## 🧩 How it works
 
 ```
