@@ -98,12 +98,23 @@ def confirm_guess(correct):
     if correct:
         ss.result = (True, f"🎉 Read your mind in {ss.turn} questions! GG.")
         ss.stage = "end"
-    else:
-        ss.history.append({"q": f"Is it {ss.pending['text']}?", "a": "no"})
-        ss.turn += 1
-        ss.pending = None
-        if ss.turn >= MAX_QUESTIONS:
-            _final_guess()
+        return
+
+    # Wrong guess. Record it as evidence.
+    ss.history.append({"q": f"Is it {ss.pending['text']}?", "a": "no"})
+
+    # If that was the last-resort final guess (or we're out of questions),
+    # the human wins — end the game instead of asking more.
+    if ss.pending.get("final") or ss.turn >= MAX_QUESTIONS:
+        ss.result = (False, "🏳️ You win — you stumped me! What were you thinking of?")
+        ss.stage = "end"
+        return
+
+    # Otherwise keep hunting.
+    ss.turn += 1
+    ss.pending = None
+    if ss.turn >= MAX_QUESTIONS:
+        _final_guess()
 
 
 def _final_guess():
@@ -185,7 +196,7 @@ def main():
     # ---- PLAYING ----
     st.markdown(f'<span class="pill">Question {min(ss.turn + 1, MAX_QUESTIONS)} / {MAX_QUESTIONS}</span>',
                 unsafe_allow_html=True)
-    st.progress(ss.turn / MAX_QUESTIONS)
+    st.progress(min(ss.turn, MAX_QUESTIONS) / MAX_QUESTIONS)
 
     # Fetch next move if needed
     if ss.pending is None:
@@ -206,12 +217,7 @@ def main():
             confirm_guess(True); st.rerun()
         no_label = "No — you lose 😎" if is_final else "Nope, keep going"
         if c2.button(no_label, use_container_width=True):
-            if is_final:
-                ss.result = (False, "🏳️ You win — you stumped me! What were you thinking of?")
-                ss.stage = "end"
-            else:
-                confirm_guess(False)
-            st.rerun()
+            confirm_guess(False); st.rerun()
     else:
         st.markdown(f'<div class="qcard">{move["text"]}</div>', unsafe_allow_html=True)
         st.write("")
